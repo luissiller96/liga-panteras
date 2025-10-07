@@ -23,8 +23,9 @@ if (!empty($action)) {
             $liga_id = $_POST['liga_id'] ?? $_GET['liga_id'] ?? null;
             $activo = $_POST['activo'] ?? $_GET['activo'] ?? null;
 
+            // CORREGIDO: obtener_equipos (antes era obtener_equipos_por_temporada)
             if ($temporada_id) {
-                $datos = $equipo->obtener_equipos_por_temporada($temporada_id);
+                $datos = $equipo->obtener_equipos($temporada_id);
             } else {
                 $datos = $equipo->obtener_equipos();
             }
@@ -76,7 +77,9 @@ if (!empty($action)) {
         // ====================================
         case "listar_select":
             $temporada_id = $_POST['temporada_id'] ?? $_GET['temporada_id'] ?? 0;
-            $datos = $equipo->obtener_equipos_por_temporada($temporada_id);
+            
+            // CORREGIDO: obtener_equipos (antes era obtener_equipos_por_temporada)
+            $datos = $equipo->obtener_equipos($temporada_id);
             echo json_encode($datos);
             break;
         
@@ -144,12 +147,11 @@ if (!empty($action)) {
                 'equipo_color_uniforme' => $_POST['color_uniforme'] ?? '#1a1a2e',
                 'capitan_nombre' => $_POST['capitan'] ?? '',
                 'capitan_telefono' => $_POST['capitan_telefono'] ?? '',
-                'capitan_correo' => $_POST['capitan_correo'] ?? '',
-                'equipo_observaciones' => $_POST['observaciones'] ?? ''
+                'capitan_correo' => $_POST['capitan_correo'] ?? ''
             ];
 
-            // Verificar si el nombre ya existe en la temporada
-            if ($equipo->verificar_nombre_existente($datos['equipo_nombre'], $datos['temporada_id'])) {
+            // CORREGIDO: verificar_nombre_existe (antes era verificar_nombre_existente)
+            if ($equipo->verificar_nombre_existe($datos['equipo_nombre'], $datos['temporada_id'])) {
                 echo json_encode([
                     "status" => "error",
                     "message" => "Ya existe un equipo con ese nombre en esta temporada"
@@ -205,19 +207,29 @@ if (!empty($action)) {
                 }
             }
 
+            // Obtener equipo actual para preservar el logo si no se sube uno nuevo
+            if (!$logo_nombre) {
+                $equipo_actual = $equipo->obtener_equipo_por_id($equipo_id);
+                $logo_nombre = $equipo_actual['equipo_logo'] ?? null;
+            }
+
             $datos = [
+                'temporada_id' => $_POST['temporada_id'],
                 'equipo_nombre' => $_POST['equipo_nombre'],
+                'equipo_logo' => $logo_nombre,
                 'equipo_color_uniforme' => $_POST['color_uniforme'] ?? '#1a1a2e',
                 'capitan_nombre' => $_POST['capitan'] ?? '',
                 'capitan_telefono' => $_POST['capitan_telefono'] ?? '',
-                'capitan_correo' => $_POST['capitan_correo'] ?? '',
-                'equipo_observaciones' => $_POST['observaciones'] ?? '',
-                'equipo_estatus' => $_POST['activo'] ?? 1
+                'capitan_correo' => $_POST['capitan_correo'] ?? ''
             ];
 
-            // Solo agregar logo si se subió uno nuevo
-            if ($logo_nombre) {
-                $datos['equipo_logo'] = $logo_nombre;
+            // CORREGIDO: verificar_nombre_existe con excluir_id
+            if ($equipo->verificar_nombre_existe($datos['equipo_nombre'], $datos['temporada_id'], $equipo_id)) {
+                echo json_encode([
+                    "status" => "error",
+                    "message" => "Ya existe otro equipo con ese nombre en esta temporada"
+                ]);
+                break;
             }
 
             $resultado = $equipo->actualizar_equipo($equipo_id, $datos);
@@ -236,6 +248,28 @@ if (!empty($action)) {
             break;
         
         // ====================================
+        // CAMBIAR ESTATUS
+        // ====================================
+        case "cambiar_estatus":
+            $equipo_id = $_POST['equipo_id'];
+            $estatus = $_POST['estatus'];
+            
+            $resultado = $equipo->cambiar_estatus($equipo_id, $estatus);
+            
+            if ($resultado) {
+                echo json_encode([
+                    "status" => "success",
+                    "message" => "Estatus actualizado correctamente"
+                ]);
+            } else {
+                echo json_encode([
+                    "status" => "error",
+                    "message" => "Error al actualizar estatus"
+                ]);
+            }
+            break;
+        
+        // ====================================
         // OBTENER ESTADÍSTICAS DEL EQUIPO
         // ====================================
         case "estadisticas":
@@ -245,11 +279,22 @@ if (!empty($action)) {
             break;
         
         // ====================================
+        // OBTENER JUGADORES DEL EQUIPO
+        // ====================================
+        case "obtener_jugadores":
+            $equipo_id = $_POST['equipo_id'] ?? $_GET['equipo_id'] ?? 0;
+            $datos = $equipo->obtener_jugadores_equipo($equipo_id);
+            echo json_encode($datos);
+            break;
+        
+        // ====================================
         // ELIMINAR EQUIPO
         // ====================================
         case "eliminar":
             $equipo_id = $_POST['equipo_id'];
-            $resultado = $equipo->desactivar_equipo($equipo_id);
+            
+            // CORREGIDO: usar eliminar_equipo en lugar de desactivar_equipo
+            $resultado = $equipo->eliminar_equipo($equipo_id);
             
             if ($resultado) {
                 echo json_encode([
@@ -259,7 +304,7 @@ if (!empty($action)) {
             } else {
                 echo json_encode([
                     "status" => "error",
-                    "message" => "Error al eliminar equipo"
+                    "message" => "No se puede eliminar un equipo con jugadores o partidos registrados"
                 ]);
             }
             break;

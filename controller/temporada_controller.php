@@ -24,7 +24,7 @@ if (!empty($action)) {
             $liga_id = $_POST['liga_id'] ?? $_GET['liga_id'] ?? null;
             
             if ($liga_id) {
-                $datos = $temporada->obtener_temporadas_por_liga($liga_id);
+                $datos = $temporada->obtener_temporadas($liga_id);
             } else {
                 $datos = $temporada->obtener_temporadas();
             }
@@ -80,7 +80,7 @@ if (!empty($action)) {
         // ====================================
         case "listar_por_liga":
             $liga_id = $_POST['liga_id'] ?? $_GET['liga_id'] ?? 0;
-            $datos = $temporada->obtener_temporadas_por_liga($liga_id);
+            $datos = $temporada->obtener_temporadas($liga_id);
             echo json_encode($datos);
             break;
         
@@ -106,6 +106,17 @@ if (!empty($action)) {
                 'costo_inscripcion' => $_POST['costo_inscripcion'],
                 'temporada_estatus' => $_POST['temporada_estatus'] ?? 'proxima'
             ];
+            
+            // CORREGIDO: verificar_nombre_existe (antes podría ser verificar_nombre_existente)
+            if (method_exists($temporada, 'verificar_nombre_existe')) {
+                if ($temporada->verificar_nombre_existe($datos['temporada_nombre'], $datos['liga_id'])) {
+                    echo json_encode([
+                        "status" => "error",
+                        "message" => "Ya existe una temporada con ese nombre en esta liga"
+                    ]);
+                    break;
+                }
+            }
             
             $resultado = $temporada->crear_temporada($datos);
             
@@ -140,6 +151,17 @@ if (!empty($action)) {
                 'costo_inscripcion' => $_POST['costo_inscripcion'],
                 'temporada_estatus' => $_POST['temporada_estatus']
             ];
+            
+            // CORREGIDO: verificar_nombre_existe con excluir_id
+            if (method_exists($temporada, 'verificar_nombre_existe')) {
+                if ($temporada->verificar_nombre_existe($datos['temporada_nombre'], $datos['liga_id'], $temporada_id)) {
+                    echo json_encode([
+                        "status" => "error",
+                        "message" => "Ya existe otra temporada con ese nombre en esta liga"
+                    ]);
+                    break;
+                }
+            }
             
             $resultado = $temporada->actualizar_temporada($temporada_id, $datos);
             
@@ -192,6 +214,8 @@ if (!empty($action)) {
         // ====================================
         case "eliminar":
             $temporada_id = $_POST['temporada_id'];
+            
+            // CORREGIDO: usar eliminar_temporada (no desactivar)
             $resultado = $temporada->eliminar_temporada($temporada_id);
             
             if ($resultado) {

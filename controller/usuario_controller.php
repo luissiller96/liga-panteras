@@ -127,8 +127,8 @@ if (!empty($action)) {
                 'usu_photoprofile' => $_POST['usu_photoprofile'] ?? null
             ];
             
-            // Verificar si el correo ya existe
-            if ($usuario->verificar_correo_existente($datos['usu_correo'])) {
+            // CORREGIDO: verificar_correo_existe (antes podría ser verificar_correo_existente)
+            if ($usuario->verificar_correo_existe($datos['usu_correo'])) {
                 echo json_encode([
                     "status" => "error",
                     "message" => "El correo electrónico ya está registrado"
@@ -166,8 +166,8 @@ if (!empty($action)) {
                 'usu_photoprofile' => $_POST['usu_photoprofile'] ?? null
             ];
             
-            // Verificar si el correo ya existe (excluyendo el actual)
-            if ($usuario->verificar_correo_existente($datos['usu_correo'], $usu_id)) {
+            // CORREGIDO: verificar_correo_existe con excluir_id
+            if ($usuario->verificar_correo_existe($datos['usu_correo'], $usu_id)) {
                 echo json_encode([
                     "status" => "error",
                     "message" => "El correo electrónico ya está registrado"
@@ -214,11 +214,35 @@ if (!empty($action)) {
             break;
         
         // ====================================
+        // CAMBIAR ESTATUS
+        // ====================================
+        case "cambiar_estatus":
+            $usu_id = $_POST['usu_id'];
+            $estatus = $_POST['estatus'];
+            
+            $resultado = $usuario->cambiar_estatus($usu_id, $estatus);
+            
+            if ($resultado) {
+                echo json_encode([
+                    "status" => "success",
+                    "message" => "Estatus actualizado correctamente"
+                ]);
+            } else {
+                echo json_encode([
+                    "status" => "error",
+                    "message" => "Error al actualizar estatus"
+                ]);
+            }
+            break;
+        
+        // ====================================
         // ELIMINAR USUARIO
         // ====================================
         case "eliminar":
             $usu_id = $_POST['usu_id'];
-            $resultado = $usuario->desactivar_usuario($usu_id);
+            
+            // CORREGIDO: usar eliminar_usuario en lugar de desactivar_usuario
+            $resultado = $usuario->eliminar_usuario($usu_id);
             
             if ($resultado) {
                 echo json_encode([

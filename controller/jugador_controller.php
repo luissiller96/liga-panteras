@@ -22,7 +22,7 @@ if (!empty($action)) {
             $equipo_id = $_POST['equipo_id'] ?? $_GET['equipo_id'] ?? null;
             
             if ($equipo_id) {
-                $datos = $jugador->obtener_jugadores_por_equipo($equipo_id);
+                $datos = $jugador->obtener_jugadores($equipo_id);
             } else {
                 $datos = $jugador->obtener_jugadores();
             }
@@ -75,7 +75,7 @@ if (!empty($action)) {
         // ====================================
         case "listar_select":
             $equipo_id = $_POST['equipo_id'] ?? $_GET['equipo_id'] ?? 0;
-            $datos = $jugador->obtener_jugadores_por_equipo($equipo_id);
+            $datos = $jugador->obtener_jugadores($equipo_id);
             echo json_encode($datos);
             break;
         
@@ -92,34 +92,41 @@ if (!empty($action)) {
         // CREAR JUGADOR
         // ====================================
         case "crear":
+            // Manejar upload de foto
+            $foto_nombre = null;
+            if (isset($_FILES['foto']) && $_FILES['foto']['error'] == 0) {
+                $directorio = "../assets/jugadores/";
+                if (!file_exists($directorio)) {
+                    mkdir($directorio, 0777, true);
+                }
+
+                $extension = pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION);
+                $foto_nombre = 'jugador_' . time() . '_' . uniqid() . '.' . $extension;
+                $ruta_destino = $directorio . $foto_nombre;
+
+                if (!move_uploaded_file($_FILES['foto']['tmp_name'], $ruta_destino)) {
+                    $foto_nombre = null;
+                }
+            }
+            
             $datos = [
                 'equipo_id' => $_POST['equipo_id'],
                 'jugador_nombre' => $_POST['jugador_nombre'],
                 'jugador_numero' => $_POST['jugador_numero'] ?? null,
                 'jugador_posicion' => $_POST['jugador_posicion'] ?? null,
-                'jugador_foto' => $_POST['jugador_foto'] ?? null,
+                'jugador_foto' => $foto_nombre,
                 'fecha_nacimiento' => $_POST['fecha_nacimiento'] ?? null
             ];
             
             // Verificar número de playera disponible
             if (!empty($datos['jugador_numero'])) {
-                if ($jugador->verificar_numero_disponible($datos['jugador_numero'], $datos['equipo_id'])) {
+                if ($jugador->verificar_numero_existe($datos['jugador_numero'], $datos['equipo_id'])) {
                     echo json_encode([
                         "status" => "error",
                         "message" => "El número de playera ya está asignado a otro jugador"
                     ]);
                     break;
                 }
-            }
-            
-            // Verificar límite de jugadores (máximo 20)
-            $total_jugadores = $jugador->contar_jugadores_equipo($datos['equipo_id']);
-            if ($total_jugadores >= 20) {
-                echo json_encode([
-                    "status" => "error",
-                    "message" => "El equipo ya tiene el máximo de 20 jugadores permitidos"
-                ]);
-                break;
             }
             
             $resultado = $jugador->crear_jugador($datos);
@@ -143,18 +150,51 @@ if (!empty($action)) {
         // ====================================
         case "actualizar":
             $jugador_id = $_POST['jugador_id'];
+            
+            // Manejar upload de nueva foto
+            $foto_nombre = null;
+            if (isset($_FILES['foto']) && $_FILES['foto']['error'] == 0) {
+                $directorio = "../assets/jugadores/";
+                if (!file_exists($directorio)) {
+                    mkdir($directorio, 0777, true);
+                }
+
+                $extension = pathinfo($_FILES['foto']['name'], PATHINFO_EXTENSION);
+                $foto_nombre = 'jugador_' . time() . '_' . uniqid() . '.' . $extension;
+                $ruta_destino = $directorio . $foto_nombre;
+
+                if (move_uploaded_file($_FILES['foto']['tmp_name'], $ruta_destino)) {
+                    // Eliminar foto anterior si existe
+                    $jugador_anterior = $jugador->obtener_jugador_por_id($jugador_id);
+                    if ($jugador_anterior && !empty($jugador_anterior['jugador_foto'])) {
+                        $foto_anterior = "../assets/jugadores/" . $jugador_anterior['jugador_foto'];
+                        if (file_exists($foto_anterior)) {
+                            unlink($foto_anterior);
+                        }
+                    }
+                } else {
+                    $foto_nombre = null;
+                }
+            }
+            
+            // Obtener jugador actual para preservar la foto si no se sube una nueva
+            if (!$foto_nombre) {
+                $jugador_actual = $jugador->obtener_jugador_por_id($jugador_id);
+                $foto_nombre = $jugador_actual['jugador_foto'] ?? null;
+            }
+            
             $datos = [
                 'jugador_nombre' => $_POST['jugador_nombre'],
                 'jugador_numero' => $_POST['jugador_numero'] ?? null,
                 'jugador_posicion' => $_POST['jugador_posicion'] ?? null,
-                'jugador_foto' => $_POST['jugador_foto'] ?? null,
+                'jugador_foto' => $foto_nombre,
                 'fecha_nacimiento' => $_POST['fecha_nacimiento'] ?? null
             ];
             
             // Verificar número de playera disponible (excluyendo el actual)
             if (!empty($datos['jugador_numero'])) {
                 $jugador_actual = $jugador->obtener_jugador_por_id($jugador_id);
-                if ($jugador->verificar_numero_disponible($datos['jugador_numero'], $jugador_actual['equipo_id'], $jugador_id)) {
+                if ($jugador->verificar_numero_existe($datos['jugador_numero'], $jugador_actual['equipo_id'], $jugador_id)) {
                     echo json_encode([
                         "status" => "error",
                         "message" => "El número de playera ya está asignado a otro jugador"
@@ -174,6 +214,28 @@ if (!empty($action)) {
                 echo json_encode([
                     "status" => "error",
                     "message" => "Error al actualizar jugador"
+                ]);
+            }
+            break;
+        
+        // ====================================
+        // CAMBIAR ESTATUS
+        // ====================================
+        case "cambiar_estatus":
+            $jugador_id = $_POST['jugador_id'];
+            $estatus = $_POST['estatus'];
+            
+            $resultado = $jugador->cambiar_estatus($jugador_id, $estatus);
+            
+            if ($resultado) {
+                echo json_encode([
+                    "status" => "success",
+                    "message" => "Estatus actualizado correctamente"
+                ]);
+            } else {
+                echo json_encode([
+                    "status" => "error",
+                    "message" => "Error al actualizar estatus"
                 ]);
             }
             break;
@@ -202,7 +264,9 @@ if (!empty($action)) {
         // ====================================
         case "eliminar":
             $jugador_id = $_POST['jugador_id'];
-            $resultado = $jugador->desactivar_jugador($jugador_id);
+            
+            // CORREGIDO: usar eliminar_jugador en lugar de desactivar_jugador
+            $resultado = $jugador->eliminar_jugador($jugador_id);
             
             if ($resultado) {
                 echo json_encode([
@@ -212,7 +276,7 @@ if (!empty($action)) {
             } else {
                 echo json_encode([
                     "status" => "error",
-                    "message" => "Error al eliminar jugador"
+                    "message" => "No se puede eliminar un jugador con goles o tarjetas registradas"
                 ]);
             }
             break;
