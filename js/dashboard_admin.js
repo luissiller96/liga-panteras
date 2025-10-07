@@ -1,7 +1,7 @@
 /**
  * Dashboard Admin JS
  * Funcionalidad para el panel de administración
- * Liga Panteras
+ * Liga Panteras - VERSIÓN DINÁMICA CON AJAX
  */
 
 // ============================================
@@ -42,60 +42,9 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ============================================
-// ANIMACIONES DE ENTRADA
-// ============================================
-document.addEventListener('DOMContentLoaded', function() {
-    // Animar KPI cards
-    const kpiCards = document.querySelectorAll('.kpi-card');
-    kpiCards.forEach((card, index) => {
-        setTimeout(() => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            card.style.transition = 'all 0.5s ease';
-            
-            setTimeout(() => {
-                card.style.opacity = '1';
-                card.style.transform = 'translateY(0)';
-            }, 50);
-        }, index * 100);
-    });
-    
-    // Animar módulos
-    const moduleCards = document.querySelectorAll('.module-card');
-    moduleCards.forEach((card, index) => {
-        setTimeout(() => {
-            card.style.opacity = '0';
-            card.style.transform = 'scale(0.9)';
-            card.style.transition = 'all 0.5s ease';
-            
-            setTimeout(() => {
-                card.style.opacity = '1';
-                card.style.transform = 'scale(1)';
-            }, 50);
-        }, index * 80);
-    });
-});
-
-// ============================================
-// TOOLTIPS (opcional)
-// ============================================
-function initTooltips() {
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    if (typeof bootstrap !== 'undefined') {
-        tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
-        });
-    }
-}
-
-// Inicializar tooltips cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', initTooltips);
-
-// ============================================
 // NOTIFICACIONES
 // ============================================
 function mostrarNotificacion(mensaje, tipo = 'success') {
-    // Si usas SweetAlert2
     if (typeof Swal !== 'undefined') {
         Swal.fire({
             icon: tipo,
@@ -107,7 +56,6 @@ function mostrarNotificacion(mensaje, tipo = 'success') {
             position: 'top-end'
         });
     } else {
-        // Fallback a alert
         alert(mensaje);
     }
 }
@@ -144,17 +92,19 @@ function confirmarEliminacion(mensaje, callback) {
 // LOADER / SPINNER
 // ============================================
 function mostrarLoader() {
-    const loader = document.getElementById('loader-overlay');
+    let loader = document.getElementById('loader-overlay');
     if (loader) {
         loader.style.display = 'flex';
     } else {
-        // Crear loader si no existe
         const loaderHTML = `
-            <div id="loader-overlay" class="loader-overlay">
-                <div class="spinner-custom"></div>
+            <div id="loader-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:9999;">
+                <div class="spinner-border text-light" role="status" style="width:3rem;height:3rem;">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
             </div>
         `;
         document.body.insertAdjacentHTML('beforeend', loaderHTML);
+        loader = document.getElementById('loader-overlay');
     }
 }
 
@@ -175,8 +125,6 @@ function initBusquedaTopbar() {
         searchInput.addEventListener('input', function(e) {
             const query = e.target.value.toLowerCase();
             
-            // Aquí puedes implementar la lógica de búsqueda
-            // Por ahora solo un ejemplo básico
             console.log('Buscando:', query);
             
             // Ejemplo: buscar en items del menú
@@ -197,8 +145,14 @@ function initBusquedaTopbar() {
 // CONTADOR ANIMADO PARA KPIs
 // ============================================
 function animarContador(elemento, valorFinal, duracion = 1000) {
+    if (typeof elemento === 'string') {
+        elemento = document.querySelector(elemento);
+    }
+    
+    if (!elemento) return;
+    
     const valorInicial = 0;
-    const incremento = valorFinal / (duracion / 16); // 60 FPS
+    const incremento = valorFinal / (duracion / 16);
     let valorActual = valorInicial;
     
     const timer = setInterval(() => {
@@ -212,24 +166,38 @@ function animarContador(elemento, valorFinal, duracion = 1000) {
     }, 16);
 }
 
-// Inicializar contadores cuando sea visible
-function initContadoresKPI() {
-    const kpiValues = document.querySelectorAll('.kpi-value');
+// ============================================
+// FORMATO DE NÚMEROS
+// ============================================
+function formatearNumero(numero) {
+    return new Intl.NumberFormat('es-MX').format(numero);
+}
+
+// ============================================
+// FORMATO DE MONEDA
+// ============================================
+function formatearMoneda(monto) {
+    return new Intl.NumberFormat('es-MX', {
+        style: 'currency',
+        currency: 'MXN'
+    }).format(monto);
+}
+
+// ============================================
+// FORMATO DE FECHA
+// ============================================
+function formatearFecha(fecha, opciones = {}) {
+    const opcionesDefault = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    };
     
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && !entry.target.dataset.animated) {
-                const valorFinal = parseInt(entry.target.textContent);
-                if (!isNaN(valorFinal)) {
-                    entry.target.textContent = '0';
-                    animarContador(entry.target, valorFinal);
-                    entry.target.dataset.animated = 'true';
-                }
-            }
-        });
-    }, { threshold: 0.5 });
+    const opcionesFinal = { ...opcionesDefault, ...opciones };
+    const date = typeof fecha === 'string' ? new Date(fecha) : fecha;
     
-    kpiValues.forEach(value => observer.observe(value));
+    return date.toLocaleDateString('es-MX', opcionesFinal);
 }
 
 // ============================================
@@ -239,10 +207,10 @@ function actualizarFechaHora() {
     const elementoFecha = document.getElementById('fecha-actual');
     if (elementoFecha) {
         const ahora = new Date();
-        const opciones = { 
-            weekday: 'long', 
-            year: 'numeric', 
-            month: 'long', 
+        const opciones = {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
             day: 'numeric',
             hour: '2-digit',
             minute: '2-digit'
@@ -258,8 +226,6 @@ setInterval(actualizarFechaHora, 60000);
 // RESPONSIVE: AJUSTAR GRÁFICOS
 // ============================================
 function ajustarGraficos() {
-    // Esta función se llamará cuando se redimensione la ventana
-    // para ajustar el tamaño de los gráficos (Chart.js, etc.)
     if (typeof Chart !== 'undefined') {
         Chart.helpers.each(Chart.instances, function(instance) {
             instance.resize();
@@ -275,6 +241,54 @@ window.addEventListener('resize', function() {
 });
 
 // ============================================
+// MANEJO DE ERRORES AJAX
+// ============================================
+function manejarErrorAjax(xhr, status, error) {
+    console.error('Error AJAX:', {
+        status: status,
+        error: error,
+        response: xhr.responseText
+    });
+    
+    let mensaje = 'Ocurrió un error al procesar la solicitud';
+    
+    if (xhr.status === 404) {
+        mensaje = 'Recurso no encontrado';
+    } else if (xhr.status === 500) {
+        mensaje = 'Error en el servidor';
+    } else if (xhr.status === 0) {
+        mensaje = 'No se pudo conectar con el servidor';
+    }
+    
+    mostrarNotificacion(mensaje, 'error');
+}
+
+// ============================================
+// REFRESH DE DATOS
+// ============================================
+function refrescarDashboard() {
+    mostrarLoader();
+    
+    // Recargar todas las secciones
+    if (typeof cargarEstadisticas === 'function') {
+        cargarEstadisticas();
+    }
+    
+    if (typeof cargarPartidosSemana === 'function') {
+        cargarPartidosSemana();
+    }
+    
+    if (typeof cargarDatosGraficos === 'function') {
+        cargarDatosGraficos();
+    }
+    
+    setTimeout(() => {
+        ocultarLoader();
+        mostrarNotificacion('Dashboard actualizado', 'success');
+    }, 1000);
+}
+
+// ============================================
 // INICIALIZACIÓN GLOBAL
 // ============================================
 document.addEventListener('DOMContentLoaded', function() {
@@ -282,7 +296,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Inicializar funcionalidades
     initBusquedaTopbar();
-    initContadoresKPI();
     actualizarFechaHora();
     
     // Ocultar loader inicial si existe
@@ -298,5 +311,10 @@ window.dashboardUtils = {
     confirmarEliminacion,
     mostrarLoader,
     ocultarLoader,
-    animarContador
+    animarContador,
+    formatearNumero,
+    formatearMoneda,
+    formatearFecha,
+    manejarErrorAjax,
+    refrescarDashboard
 };
