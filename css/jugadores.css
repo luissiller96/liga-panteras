@@ -1,0 +1,482 @@
+/* ============================================
+   MÓDULO DE JUGADORES - ESTILOS
+   ============================================ */
+
+/* KPI Cards Pequeños */
+.kpi-card-small {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+.kpi-card-small:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+}
+
+.kpi-card-small.primary {
+    border-left-color: #118ab2;
+}
+
+.kpi-card-small.success {
+    border-left-color: #06d6a0;
+}
+
+.kpi-card-small.warning {
+    border-left-color: #ffd166;
+}
+
+.kpi-card-small.danger {
+    border-left-color: #ef476f;
+}
+
+.kpi-icon-small {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.kpi-card-small.primary .kpi-icon-small {
+    background: linear-gradient(135deg, #118ab2 0%, #0a5f7d 100%);
+}
+
+.kpi-card-small.success .kpi-icon-small {
+    background: linear-gradient(135deg, #06d6a0 0%, #04a777 100%);
+}
+
+.kpi-card-small.warning .kpi-icon-small {
+    background: linear-gradient(135deg, #ffd166 0%, #e6b74d 100%);
+}
+
+.kpi-card-small.danger .kpi-icon-small {
+    background: linear-gradient(135deg, #ef476f 0%, #d13555 100%);
+}
+
+.kpi-info-small {
+    flex: 1;
+}
+
+.kpi-label-small {
+    font-size: 12px;
+    color: #6c757d;
+    margin-bottom: 3px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.kpi-value-small {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a1a2e;
+}
+
+/* Foto del jugador en tabla */
+.jugador-foto-tabla {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #f8f9fa;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.jugador-foto-placeholder {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 28px;
+}
+
+/* Equipo info en tabla */
+.equipo-info-tabla {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.equipo-info-tabla img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.equipo-info-tabla i {
+    font-size: 24px;
+    color: #6c757d;
+}
+
+.equipo-info-tabla span {
+    font-weight: 500;
+    color: #1a1a2e;
+}
+
+/* Número de playera */
+.numero-playera {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #e94560 0%, #d13555 100%);
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(233, 69, 96, 0.3);
+}
+
+/* Badge de posición */
+.posicion-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: #f8f9fa;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #1a1a2e;
+}
+
+.posicion-badge i {
+    color: #e94560;
+}
+
+/* Estadísticas en tabla */
+.stat-goles {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 35px;
+    padding: 6px 10px;
+    background: #06d6a0;
+    color: white;
+    font-weight: 700;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.stat-amarilla {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 35px;
+    padding: 6px 10px;
+    background: #ffd166;
+    color: #1a1a2e;
+    font-weight: 700;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.stat-roja {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 35px;
+    padding: 6px 10px;
+    background: #ef476f;
+    color: white;
+    font-weight: 700;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+/* Tabs del modal */
+.nav-tabs {
+    border-bottom: 3px solid #e94560;
+    margin-bottom: 25px;
+}
+
+.nav-tabs .nav-link {
+    color: #6c757d;
+    font-weight: 600;
+    border: none;
+    padding: 12px 20px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-tabs .nav-link:hover {
+    color: #e94560;
+    background: rgba(233, 69, 96, 0.05);
+}
+
+.nav-tabs .nav-link.active {
+    color: white;
+    background: linear-gradient(135deg, #e94560 0%, #d13555 100%);
+    border-radius: 8px 8px 0 0;
+}
+
+.nav-tabs .nav-link i {
+    font-size: 16px;
+}
+
+/* Preview de foto */
+.foto-preview {
+    background: #f8f9fa;
+    border: 2px dashed #dee2e6;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+}
+
+.foto-preview img {
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: contain;
+    border-radius: 50%;
+    border: 4px solid white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Input de CURP */
+#curp {
+    text-transform: uppercase;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 1px;
+}
+
+/* Campos de estadísticas */
+#goles::-webkit-inner-spin-button,
+#tarjetas_amarillas::-webkit-inner-spin-button,
+#tarjetas_rojas::-webkit-inner-spin-button {
+    opacity: 1;
+}
+
+/* Alert personalizado */
+.alert-info {
+    background: rgba(17, 138, 178, 0.1);
+    border: 1px solid #118ab2;
+    border-left: 4px solid #118ab2;
+    color: #0a5f7d;
+}
+
+.alert-info i {
+    color: #118ab2;
+    margin-right: 8px;
+}
+
+/* Botones en DataTable */
+.btn-group {
+    display: flex;
+    gap: 3px;
+}
+
+.btn-sm {
+    padding: 6px 10px;
+    font-size: 12px;
+}
+
+.btn-info {
+    background: #118ab2;
+    border: none;
+}
+
+.btn-info:hover {
+    background: #0a5f7d;
+}
+
+/* Modal de detalle (SweetAlert2) */
+.swal2-popup {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .kpi-card-small {
+        flex-direction: column;
+        text-align: center;
+        padding: 15px;
+    }
+    
+    .kpi-value-small {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .jugador-foto-tabla,
+    .jugador-foto-placeholder {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .jugador-foto-placeholder {
+        font-size: 20px;
+    }
+    
+    .equipo-info-tabla {
+        flex-direction: column;
+        text-align: center;
+        gap: 5px;
+    }
+    
+    .equipo-info-tabla img {
+        width: 25px;
+        height: 25px;
+    }
+    
+    .equipo-info-tabla span {
+        font-size: 12px;
+    }
+    
+    .numero-playera {
+        width: 35px;
+        height: 35px;
+        font-size: 14px;
+    }
+    
+    .posicion-badge {
+        font-size: 10px;
+        padding: 4px 8px;
+    }
+    
+    .nav-tabs .nav-link {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+    
+    .nav-tabs .nav-link i {
+        font-size: 14px;
+    }
+    
+    #tablaJugadores {
+        font-size: 12px;
+    }
+    
+    #tablaJugadores thead th,
+    #tablaJugadores tbody td {
+        padding: 10px 5px;
+    }
+}
+
+@media (max-width: 576px) {
+    .kpi-card-small {
+        padding: 12px;
+    }
+    
+    .kpi-icon-small {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+    
+    .kpi-value-small {
+        font-size: 18px;
+    }
+    
+    .kpi-label-small {
+        font-size: 10px;
+    }
+    
+    .stat-goles,
+    .stat-amarilla,
+    .stat-roja {
+        min-width: 30px;
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+        gap: 2px;
+    }
+    
+    .btn-group .btn {
+        width: 100%;
+    }
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.kpi-card-small {
+    animation: fadeIn 0.4s ease;
+}
+
+.kpi-card-small:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.kpi-card-small:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.kpi-card-small:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.kpi-card-small:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+/* Utilidades adicionales */
+.text-uppercase {
+    text-transform: uppercase !important;
+}
+
+.form-label.required::after {
+    content: " *";
+    color: #e94560;
+    font-weight: bold;
+}
+
+/* Personalización de input number */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Mejorar visibilidad de switches */
+.form-check-input {
+    width: 50px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.form-check-label {
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Estilo para campos deshabilitados */
+.form-control:disabled,
+.form-select:disabled {
+    background-color: #f8f9fa;
+    opacity: 0.7;
+    cursor: not-allowed;
+}

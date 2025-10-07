@@ -1,0 +1,256 @@
+/* assets/css/login.css */
+
+/* Paleta de colores para Solupatch: industrial y profesional */
+:root {
+  --color-primary: #ffc718; /* Amarillo principal */
+  --color-primary-dark: #e6b316; /* Amarillo más oscuro para hover */
+  --color-secondary: #000000; /* Negro */
+  --color-secondary-light: #333333; /* Negro más claro */
+  --color-background: #f5f5f5; /* Gris muy claro para el fondo */
+  --color-text: #2c2c2c; /* Gris muy oscuro para texto principal */
+  --color-muted: #666666; /* Gris para texto secundario */
+  --font-display: 'Roboto', sans-serif; /* Fuente fuerte para títulos */
+  --font-body: 'Montserrat', sans-serif; /* Fuente moderna y legible */
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  line-height: 1.6;
+}
+
+/* --- Columna de la Izquierda (Branding con Imagen) --- */
+#branding-column {
+  /* Imagen de fondo relevante para empresa de asfalto */
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(255, 199, 24, 0.8)), url('https://images.unsplash.com/photo-1516937941344-00b4e0337589?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem;
+  position: relative;
+}
+
+.branding-content {
+  color: white;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+  z-index: 2;
+}
+
+.branding-content h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 3.8rem);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.branding-content p {
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  font-weight: 500;
+  opacity: 0.95;
+  margin-bottom: 2rem;
+}
+
+.feature-list {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.feature-list li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  font-size: 1rem;
+}
+
+.feature-list li i {
+  color: var(--color-primary);
+  margin-right: 0.8rem;
+  font-size: 1.2rem;
+}
+
+/* --- Columna de la Derecha (Formulario) --- */
+#form-column {
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.logo-icon {
+  background: linear-gradient(135deg, var(--color-primary), #ffdb4d);
+  color: var(--color-secondary);
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  margin-right: 1rem;
+  box-shadow: 0 4px 15px rgba(255, 199, 24, 0.3);
+}
+
+.logo-text {
+  text-align: left;
+}
+
+.logo-text h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--color-secondary);
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.logo-text p {
+  color: var(--color-muted);
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.login-card h2 {
+  font-weight: 700;
+  color: var(--color-secondary);
+  margin-bottom: 0.5rem;
+}
+
+/* Estilos para los campos del formulario */
+.input-group-text {
+  background-color: transparent;
+  border-right: none;
+  color: var(--color-secondary);
+  font-size: 1.1rem;
+  border-color: #dee2e6;
+}
+
+.form-control-lg {
+  padding: 0.9rem 1rem;
+  font-size: 1rem;
+  border-left: none;
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  background-color: #fff;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 0.25rem rgba(255, 199, 24, 0.25);
+}
+
+.input-group:focus-within .input-group-text {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+/* Botón principal */
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-primary), #ffdb4d);
+  border: none;
+  color: var(--color-secondary);
+  padding: 0.9rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  border-radius: 0.5rem;
+  text-transform: uppercase;
+  box-shadow: 0 4px 15px rgba(255, 199, 24, 0.4);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+  color: var(--color-secondary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 199, 24, 0.5);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Checkbox "Recuérdame" */
+.form-check-input {
+  border-color: #ced4da;
+}
+
+.form-check-input:checked {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.form-check label {
+  color: var(--color-muted);
+  font-weight: 500;
+}
+
+.text-muted a {
+  color: var(--color-secondary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.text-muted a:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+/* Alertas personalizadas */
+.alert {
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: 500;
+}
+
+.alert-warning {
+  background-color: #fff8e1;
+  color: #f57f17;
+}
+
+.alert-danger {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+/* Responsividad mejorada */
+@media (max-width: 768px) {
+  .branding-content h1 {
+    font-size: 2.2rem;
+  }
+  
+  .feature-list {
+    text-align: center;
+  }
+  
+  .logo-container {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .logo-icon {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+}

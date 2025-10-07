@@ -1,0 +1,511 @@
+/* ============================================
+   GESTIÓN DE EQUIPOS - LIGA PANTERAS
+   ============================================ */
+
+:root {
+    --primary-dark: #1a1a2e;
+    --secondary-dark: #16213e;
+    --accent-red: #e94560;
+    --accent-gold: #ffd700;
+    --success-green: #06d6a0;
+    --info-blue: #118ab2;
+    --white: #ffffff;
+    --light-gray: #f8f9fa;
+    --text-dark: #2c3e50;
+    --text-muted: #6c757d;
+}
+
+/* ============================================
+   BOTONES PERSONALIZADOS
+   ============================================ */
+.btn-primary-custom {
+    background: linear-gradient(135deg, var(--accent-red), #c7254e);
+    border: none;
+    color: var(--white);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(233, 69, 96, 0.3);
+}
+
+.btn-primary-custom:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(233, 69, 96, 0.4);
+    background: linear-gradient(135deg, #c7254e, var(--accent-red));
+}
+
+.btn-success-custom {
+    background: linear-gradient(135deg, var(--success-green), #05b385);
+    border: none;
+    color: var(--white);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(6, 214, 160, 0.3);
+}
+
+.btn-success-custom:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(6, 214, 160, 0.4);
+    background: linear-gradient(135deg, #05b385, var(--success-green));
+}
+
+/* ============================================
+   CARD DE FILTROS
+   ============================================ */
+.filtros-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.filtros-card:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+.filtros-card .form-label {
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.filtros-card .form-select {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+}
+
+.filtros-card .form-select:focus {
+    border-color: var(--accent-red);
+    box-shadow: 0 0 0 0.2rem rgba(233, 69, 96, 0.15);
+}
+
+/* ============================================
+   SECCIÓN DE TARJETAS
+   ============================================ */
+.section-card {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.section-body {
+    padding: 20px;
+}
+
+/* ============================================
+   TABLA
+   ============================================ */
+.table-responsive {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table thead th {
+    background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
+    color: var(--white);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    padding: 15px;
+    border: none;
+}
+
+.table tbody tr {
+    transition: all 0.3s ease;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(233, 69, 96, 0.05);
+    transform: scale(1.01);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.table tbody td {
+    vertical-align: middle;
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* Logo de equipo en tabla */
+.equipo-logo-tabla {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--accent-red);
+}
+
+.equipo-logo-placeholder {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-red), #c7254e);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 20px;
+}
+
+/* Color badge */
+.color-badge {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    display: inline-block;
+    border: 2px solid #dee2e6;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================
+   MODAL
+   ============================================ */
+.modal-content {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
+    color: var(--white);
+    border-radius: 15px 15px 0 0;
+    padding: 20px 25px;
+    border-bottom: none;
+}
+
+.modal-header .modal-title {
+    font-weight: 700;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-header .modal-title i {
+    color: var(--accent-red);
+}
+
+.modal-header .btn-close {
+    filter: brightness(0) invert(1);
+    opacity: 0.8;
+}
+
+.modal-header .btn-close:hover {
+    opacity: 1;
+}
+
+.modal-body {
+    padding: 25px;
+}
+
+.modal-footer {
+    border-top: 1px solid #dee2e6;
+    padding: 15px 25px;
+}
+
+/* ============================================
+   FORMULARIO
+   ============================================ */
+.form-label {
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.form-label.required::after {
+    content: " *";
+    color: var(--accent-red);
+}
+
+.form-control,
+.form-select {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--accent-red);
+    box-shadow: 0 0 0 0.2rem rgba(233, 69, 96, 0.15);
+}
+
+/* Color Picker */
+.form-control-color {
+    width: 60px;
+    height: 40px;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.form-control-color:focus {
+    border-color: var(--accent-red);
+}
+
+/* Preview del Logo */
+.logo-preview {
+    text-align: center;
+    padding: 20px;
+    background: var(--light-gray);
+    border-radius: 12px;
+    border: 2px dashed #dee2e6;
+}
+
+.logo-preview img {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Switch personalizado */
+.form-check-input {
+    width: 50px;
+    height: 25px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.form-check-input:checked {
+    background-color: var(--success-green);
+    border-color: var(--success-green);
+}
+
+.form-check-label {
+    margin-left: 10px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+/* ============================================
+   MODAL JUGADORES
+   ============================================ */
+.jugador-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.jugador-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+.jugador-foto {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 3px solid var(--accent-red);
+}
+
+.jugador-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.jugador-foto i {
+    font-size: 60px;
+    color: var(--text-muted);
+}
+
+.jugador-info-card {
+    flex: 1;
+}
+
+.jugador-info-card h5 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.jugador-info-card p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.jugador-stats {
+    display: flex;
+    gap: 15px;
+    margin-top: 8px;
+}
+
+.stat-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.stat-item i {
+    font-size: 14px;
+}
+
+/* ============================================
+   BADGES
+   ============================================ */
+.badge {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+.badge.bg-success {
+    background: linear-gradient(135deg, var(--success-green), #05b385) !important;
+}
+
+.badge.bg-danger {
+    background: linear-gradient(135deg, var(--accent-red), #c7254e) !important;
+}
+
+.badge.bg-info {
+    background: linear-gradient(135deg, var(--info-blue), #0d7399) !important;
+}
+
+.badge.bg-primary {
+    background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark)) !important;
+}
+
+/* ============================================
+   BOTONES DE ACCIÓN
+   ============================================ */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-group .btn {
+    padding: 6px 12px;
+    font-size: 14px;
+}
+
+.btn-sm {
+    transition: all 0.3s ease;
+}
+
+.btn-sm:hover {
+    transform: translateY(-2px);
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #ffc107, #e0a800);
+    border: none;
+    color: var(--text-dark);
+}
+
+.btn-warning:hover {
+    background: linear-gradient(135deg, #e0a800, #ffc107);
+    color: var(--text-dark);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, var(--accent-red), #c7254e);
+    border: none;
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, #c7254e, var(--accent-red));
+}
+
+.btn-info {
+    background: linear-gradient(135deg, var(--info-blue), #0d7399);
+    border: none;
+}
+
+.btn-info:hover {
+    background: linear-gradient(135deg, #0d7399, var(--info-blue));
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .btn-primary-custom,
+    .btn-success-custom {
+        width: 100%;
+    }
+
+    .table {
+        font-size: 13px;
+    }
+
+    .table thead th,
+    .table tbody td {
+        padding: 10px;
+    }
+
+    .equipo-logo-tabla,
+    .equipo-logo-placeholder {
+        width: 35px;
+        height: 35px;
+    }
+
+    .jugador-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .modal-body {
+        padding: 20px 15px;
+    }
+}
+
+/* ============================================
+   ANIMACIONES
+   ============================================ */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.section-card,
+.filtros-card {
+    animation: fadeIn 0.5s ease;
+}
+
+/* Loading spinner personalizado */
+.swal2-loading .swal2-icon {
+    border-color: var(--accent-red) transparent var(--accent-red) transparent;
+}
